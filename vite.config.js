@@ -1,9 +1,9 @@
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 
-function mlOauthDev(clientSecret) {
+function mlDevPlugins(clientSecret) {
   return {
-    name: 'ml-oauth-dev',
+    name: 'ml-dev-proxy',
     configureServer(server) {
       server.middlewares.use('/ml-oauth', (req, res) => {
         if (req.method !== 'POST') { res.statusCode = 405; res.end(); return; }
@@ -24,6 +24,22 @@ function mlOauthDev(clientSecret) {
           res.end(data);
         });
       });
+
+      server.middlewares.use('/ml-search', (req, res) => {
+        if (req.method !== 'POST') { res.statusCode = 405; res.end(); return; }
+        let body = '';
+        req.on('data', chunk => { body += chunk; });
+        req.on('end', async () => {
+          const { token, params } = JSON.parse(body);
+          const mlRes = await fetch(`https://api.mercadolibre.com/sites/MLA/search?${params}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const data = await mlRes.text();
+          res.statusCode = mlRes.status;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(data);
+        });
+      });
     },
   };
 }
@@ -31,6 +47,6 @@ function mlOauthDev(clientSecret) {
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return {
-    plugins: [react(), mlOauthDev(env.VITE_ML_CLIENT_SECRET || '')],
+    plugins: [react(), mlDevPlugins(env.VITE_ML_CLIENT_SECRET || '')],
   };
 })

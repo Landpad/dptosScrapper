@@ -5,10 +5,14 @@
 [functions]
   directory = "functions"
 
-# Redirige /ml-oauth a la Function (igual URL que el proxy de Vite en dev)
 [[redirects]]
   from = "/ml-oauth"
   to = "/.netlify/functions/ml-oauth"
+  status = 200
+
+[[redirects]]
+  from = "/ml-search"
+  to = "/.netlify/functions/ml-search"
   status = 200
 
 # SPA fallback para React Router (si lo usás en el futuro)

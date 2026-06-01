@@ -374,9 +374,13 @@ export default function BuscaDpto() {
     setError("");
     try {
       const token = await getValidToken();
-      const url = `${ML_API}/sites/MLA/search?${buildParams(off)}&access_token=${token}`;
-      console.log("[BuscaDpto] GET", url.replace(/access_token=[^&]+/, "access_token=***"));
-      const res = await fetch(url);
+      const params = buildParams(off);
+      console.log("[BuscaDpto] POST /ml-search", params);
+      const res = await fetch("/ml-search", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, params }),
+      });
       if (!res.ok) {
         let body = "";
         try { body = await res.text(); } catch { /* ignore */ }
