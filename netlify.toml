@@ -2,6 +2,9 @@
   command = "npm run build"
   publish = "dist"
 
+[functions]
+  directory = "functions"
+
 # Redirige /ml-oauth a la Function (igual URL que el proxy de Vite en dev)
 [[redirects]]
   from = "/ml-oauth"
