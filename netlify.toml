@@ -15,6 +15,11 @@
   to = "/.netlify/functions/ml-search"
   status = 200
 
+[[redirects]]
+  from = "/ml-debug"
+  to = "/.netlify/functions/ml-debug"
+  status = 200
+
 # SPA fallback para React Router (si lo usás en el futuro)
 [[redirects]]
   from = "/*"
