@@ -20,6 +20,11 @@
   to = "/.netlify/functions/ml-debug"
   status = 200
 
+[[redirects]]
+  from = "/ml-webhook"
+  to = "/.netlify/functions/ml-webhook"
+  status = 200
+
 # SPA fallback para React Router (si lo usás en el futuro)
 [[redirects]]
   from = "/*"
