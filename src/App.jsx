@@ -13,7 +13,7 @@ const saveAuth = (d) => localStorage.setItem(AUTH_KEY, JSON.stringify(d));
 const clearAuth = () => localStorage.removeItem(AUTH_KEY);
 
 function mlAuthUrl() {
-  return `https://auth.mercadolibre.com.ar/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=offline_access`;
+  return `https://auth.mercadolibre.com.ar/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=offline_access+read`;
 }
 
 async function fetchToken(params) {
