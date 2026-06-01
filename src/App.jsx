@@ -13,7 +13,7 @@ const saveAuth = (d) => localStorage.setItem(AUTH_KEY, JSON.stringify(d));
 const clearAuth = () => localStorage.removeItem(AUTH_KEY);
 
 function mlAuthUrl() {
-  return `https://auth.mercadolibre.com.ar/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+  return `https://auth.mercadolibre.com.ar/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=offline_access`;
 }
 
 async function fetchToken(params) {
@@ -355,15 +355,13 @@ export default function BuscaDpto() {
   const buildParams = (off = 0) => {
     const p = new URLSearchParams();
     p.set("category", CATEGORY_DEPARTAMENTOS);
-    p.set("OPERATION", OPERATION_ALQUILER);
     p.set("sort", "date_desc");
     p.set("limit", LIMIT);
     p.set("offset", off);
-    const q = [filters.query, filters.zona].filter(Boolean).join(" ");
-    if (q) p.set("q", q);
+    const q = [filters.query, filters.zona, "alquiler"].filter(Boolean).join(" ");
+    p.set("q", q);
     if (filters.precioMin) p.set("price_min", filters.precioMin);
     if (filters.precioMax) p.set("price_max", filters.precioMax);
-    if (filters.moneda) p.set("currency_id", filters.moneda === "USD" ? "USD" : "ARS");
     if (filters.ambientes) p.set("ROOMS", filters.ambientes);
     if (filters.m2Min) p.set("TOTAL_AREA_FROM", filters.m2Min);
     if (filters.m2Max) p.set("TOTAL_AREA_TO", filters.m2Max);
